@@ -19,6 +19,7 @@
   "devDependencies": {
     "config": "*",
     "eslint": "7.32.0",
+    "@types/cors": "2.8.12",
     "@types/express": "4.17.13",
     "tsconfig": "*",
     "@types/node": "^17.0.12",
