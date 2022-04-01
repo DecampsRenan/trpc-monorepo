@@ -1,20 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
-import { loggerLink } from '@trpc/client/links/loggerLink';
-import { withTRPC } from '@trpc/next';
-import { TRPCError } from '@trpc/server';
-import { transformer } from '../utils/trpc';
-import { AppRouter } from 'server';
+import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
+import { loggerLink } from "@trpc/client/links/loggerLink";
+import { withTRPC } from "@trpc/next";
+import { TRPCError } from "@trpc/server";
+import { transformer } from "../utils/trpc";
+import { AppRouter } from "server";
+import { AppProps } from "next/app";
 
-const App = ({ Component, pageProps }) => {
-  return (
-    <Component {...pageProps} />
-  );
+const App = ({ Component, pageProps }: AppProps) => {
+  return <Component {...pageProps} />;
 };
 
 function getBaseUrl() {
-  return "http://localhost:2021"
+  return "http://localhost:2021";
 }
 
 export default withTRPC<AppRouter>({
@@ -23,20 +22,20 @@ export default withTRPC<AppRouter>({
       links: [
         loggerLink({
           enabled: (opts) =>
-            process.env.NODE_ENV === 'development' ||
-            (opts.direction === 'down' && opts.result instanceof Error),
+            process.env.NODE_ENV === "development" ||
+            (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/trpc`,
         }),
       ],
-      // transformer, TODO: add superjson coté serveur
+      transformer,
       queryClientConfig: {
         defaultOptions: {
           queries: {
             retry: (failureCount, error: any) => {
-              const trcpErrorCode = error?.data?.code as TRPCError['code'];
-              if (trcpErrorCode === 'NOT_FOUND') {
+              const trcpErrorCode = error?.data?.code as TRPCError["code"];
+              if (trcpErrorCode === "NOT_FOUND") {
                 return false;
               }
               if (failureCount < 3) {

@@ -14,7 +14,8 @@
     "@trpc/server": "9.20.3",
     "ui": "*",
     "zod": "3.0.0",
-    "cors": "2.8.5"
+    "cors": "2.8.5",
+    "superjson": "1.8.1"
   },
   "devDependencies": {
     "config": "*",
