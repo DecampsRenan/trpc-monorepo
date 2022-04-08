@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { PrismaClient } from 'db';
+
+const db = new PrismaClient();
 
 import { createRouter } from "../createRouter";
 
@@ -7,20 +10,22 @@ export const postsRouter = createRouter()
     input: z.object({
       title: z.string(),
     }),
-    resolve: ({ input }) => {
-      // ..
-      return {
-        id: "xxxx",
-        ...input,
-      };
+    resolve: async ({ input }) => {
+      console.log({ input });
+      try {
+
+        await db.post.create({
+          data: {
+            title: input.title
+          }
+        })
+      } catch (error) {
+        console.error("Cannot create post", error)
+      }
     },
   })
   .query("list", {
-    resolve() {
-      // ..
-      return [
-        { id: 1, name: "toto" },
-        { id: 2, name: "toto" },
-      ];
+    resolve: async () => {
+      return await db.post.findMany();
     },
   });

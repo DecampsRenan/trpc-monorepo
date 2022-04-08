@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'user'
+      POSTGRES_DB: 'db'
+    ports:
+      - 5432:5432
